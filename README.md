@@ -3,5 +3,4 @@
 
 anaconda 가상환경에서 python 3.13 으로 개발
 
-<img src="https://capsule-render.vercel.app/api?type=transparent&color=gradient&height=200&section=header&text=todoList&fontSize=90"/>
-<img src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=300&section=header&text=capsule%20render&fontSize=90&animation=fadeIn&fontAlignY=38"/>
+<img src="https://capsule-render.vercel.app/api?type=transparent&color=gradient&height=200&section=header&text=todoList&fontSize=90&fontColor=d6ace6"/>
