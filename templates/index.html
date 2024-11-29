@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>오늘 할 일</title>
+    <script src="{{ url_for('static', filename="js/jquery.js") }}" type="text/javascript"></script>
+    <script src="{{ url_for('static', filename="js/main.js") }}" type="text/javascript"></script>
+    <link href="{{ url_for('static', filename="css/main.css") }}" rel="stylesheet" id="main-css">
+</head>
+<body>
+    <div class="container">
+        <h1>오늘 할 일</h1>
+        <form id="todo-form">
+            <label for="todo">할 일을 입력하세요:</label>
+            <input type="text" id="todo" name="todo" placeholder="할 일을 입력하세요" required>
+            <button type="button" onclick="onAddTodoList()">추가</button>
+        </form>
+        <ul class="todo-list" id="todoList">
+            {% for todo in todos %}
+                <li 
+                    class="{% if todo.status == 'completed' %}completed{% endif %}"
+                    onclick="toggleCompletion(this)">
+                    {{ todo.text }}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
