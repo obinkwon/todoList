@@ -2,7 +2,7 @@
 
 anaconda 가상환경에서 python 3.13 으로 개발
 
-<img src="https://capsule-render.vercel.app/api?type=transparent&height=300&section=header&text=todoList&fontSize=90&fontColor=#ffffff&fontAlignY=38&desc=오늘의 할일을 문장으로 변경하여 일기로 저장 시키는 시스템&descAlignY=51&descAlign=62"/>
+<img src="https://capsule-render.vercel.app/api?type=transparent&height=300&section=header&text=todoList&fontSize=90&fontColor=#ffffff&fontAlignY=38&desc=오늘의 할일을 문장으로 변경하여 일기로 저장 시키는 시스템&descAlignY=51&descAlign=62&descSize=30"/>
 
 
 ## Navigation
