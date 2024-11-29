@@ -1,15 +1,16 @@
-<img src="https://capsule-render.vercel.app/api?type=transparent&height=300&section=header&text=todoList&fontSize=90&fontColor=#ffffff&fontAlignY=38&desc=asdasdsad&descAlignY=51&descAlign=62&descSize=30"/>
-> 오늘의 할일을 문장으로 변경하여 일기로 저장 시키는 시스템
+<img src="https://capsule-render.vercel.app/api?type=transparent&height=200&section=header&text=todoList&fontSize=90&fontColor=#ffffff&fontAlignY=38"/>
+<blockquote data-ke-style="style2">
+<p data-ke-size="size16">오늘의 할일을 문장으로 변경하여 일기로 저장 시키는 시스템</p>
+</blockquote>
+<br/><br/><br/>
 
-## Navigation
+## 개발환경
+- python : 3.13
+- anaconda : 3
+<br/><br/><br/>
 
-1. [구성언어](#구성언어)
-2. [개발환경](#개발환경)
-3. [Color](#color)
 
-# 구성언어
-- [python] : 3.13
-
-# 개발환경
-- [anaconda] : default
-
+## 수정내역
+- 리스트에 할일을 추가하는 형식의 폼 생성
+- 할일을 완료 처리하는 기능 추가
+- 파일관리를 위해 날짜별로 생성하는 부분 수정
