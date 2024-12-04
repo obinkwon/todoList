@@ -7,7 +7,6 @@ app = Flask(__name__)
 @app.route("/", methods=["GET"])
 def index():
     todos = load_todos()  # 저장된 할 일 불러오기
-    print(todos)
     return render_template("index.html", todos=todos)
 
 # 리스트 수정

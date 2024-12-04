@@ -24,8 +24,14 @@ def load_todos():
         else:
             with open(TODO_FILE, "r", encoding="utf-8") as file:
                 list = json.load(file)
-        return list
+                # 이전 할일중 완료된 일은 제외하고 불러오기
+                filtered_list = [
+                    item for item in list
+                    if not (current_date > item.get("date") and item.get("status") == "C")
+                ]
+        return filtered_list
     except:
+        # json 파일 불러올때 예외처리
         with open(TODO_FILE, "w", encoding="utf-8") as newFile:
             json.dump([], newFile)
         return []
