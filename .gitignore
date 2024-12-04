@@ -1,3 +1,4 @@
-todos_*.txt
+todoList.json
 __pycache__/*
 app/__pycache__/*
+
