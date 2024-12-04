@@ -14,7 +14,6 @@ function onAddTodoList(){
 
 // 리스트에 추가하는 api
 function addList(messageText) {
-    console.log('messageText',messageText)
     item = {"text" : messageText}
     $.ajax({
         url: "http://127.0.0.1:5000/updated",
@@ -41,20 +40,14 @@ function addList(messageText) {
 function toggleCompletion(item) {
     // 클릭한 항목에 'completed' 클래스 추가/제거
     item.classList.toggle('completed');
-    item.innerText += '%완료%'
-
-    const todoList = document.getElementById('todoList');
-    const todos = todoList.getElementsByTagName("li");
-    const list = Array.from(todos).map(li => li.textContent.trim());
-    
-    console.log(item)
+    json_data = {"id" : item.id ,"text" : item.innerText}
 
     $.ajax({
         url: "http://127.0.0.1:5000/updated",
         type: "POST",
         dataType: "json",
         contentType: "application/json",
-        data: JSON.stringify(list),
+        data: JSON.stringify(json_data),
         success: function (data) {
             state = data['state'];
 

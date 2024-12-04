@@ -17,7 +17,7 @@
         </form>
         <ul class="todo-list" id="todoList">
             {% for todo in todos %}
-                <li 
+                <li id="{{ todo.id }}"
                     class="{% if todo.status == 'C' %}completed{% endif %}"
                     onclick="toggleCompletion(this)">
                     {{ todo.text }}
