@@ -1,5 +1,7 @@
 import os
+import json
 from datetime import datetime, timedelta
+from flask import jsonify
 
 # 현재 날짜 가져오기
 today = datetime.now()
@@ -11,8 +13,7 @@ current_date = today.strftime("%Y%m%d")
 yesterday_date = yesterday.strftime("%Y%m%d")
 
 # 파일 이름 생성
-TODO_FILE = f"todos_{current_date}.txt"
-TODO_FILE_Y = f"todos_{yesterday_date}.txt"
+TODO_FILE = f"todoList.json"
 
 # 할 일 목록 불러오기
 def load_todos():
@@ -20,25 +21,33 @@ def load_todos():
     # 파일이 없으면 생성
     if not os.path.exists(TODO_FILE):
         with open(TODO_FILE, "w", encoding="utf-8") as newFile:
-            # 이전날짜 파일이 있는지 확인
-            if os.path.exists(TODO_FILE_Y):
-                with open(TODO_FILE_Y, "r", encoding="utf-8") as oldFile:
-                    for line in oldFile.readlines():
-                        if not '%완료%' in line.strip():
-                            newFile.write(line.strip() + "\n")
-                            list.append({"text": line.strip(), "status": ''})
-                oldFile.close()
-        newFile.close()
+            newFile.close()
+    # 파일이 있으면 불러오기
     else:
         with open(TODO_FILE, "r", encoding="utf-8") as file:
-            for line in file.readlines():
-                status = 'completed' if '%완료%' in line.strip() else ''
-                text = line.strip().replace('%완료%', '') if '%완료%' in line.strip() else line.strip()
-                list.append({"text": text, "status": status})
+            list = json.load(file)
     return list
 
 # 할 일 목록 저장하기
 def save_todo(todo):
-    with open(TODO_FILE, "a", encoding="utf-8") as file:
-        file.write(todo + "\n")
-        file.close()
+    # data 현재날짜로 기본세팅
+    data = {"id":'', "text":todo['text'], "date":current_date, "status":"N"}
+
+    with open(TODO_FILE, encoding="utf-8") as file:
+        list = json.load(file)
+        idList = [i['id'] for i in list] # id 만 담은 list
+        last_id = idList[-1] # list에서 마지막 index 값 가져오기
+
+        if todo.get('id') is None: # 해당 객체 속성 값이 없을때
+            data['id'] = last_id + 1 # id 값 새로 부여
+            list.append(data)
+        else:
+            for item in list:
+                if item.get("id") == todo['id']:
+                    item.text = data.text
+                    item.status = "C" if data.status == "N" else "N"
+        with open(TODO_FILE, "w", encoding="utf-8") as newFile:
+            newFile.write(json.dumps(list, indent=4, ensure_ascii=False)) # 들여쓰기 4, 한글깨짐 False
+            newFile.close()
+    file.close()
+    return jsonify({'state': 'SUCCESS', 'message': 'success', 'todo': todo})

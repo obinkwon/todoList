@@ -1,19 +1,20 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, request, jsonify
 from app.core import load_todos, save_todo
 
 app = Flask(__name__)
-        
+
+# 리스트 읽기        
 @app.route("/", methods=["GET"])
 def index():
     todos = load_todos()  # 저장된 할 일 불러오기
     return render_template("index.html", todos=todos)
 
-@app.route("/saved/<text>", methods=["POST"])
-def save(text):
-    new_todo = text
-    if new_todo:
-        save_todo(new_todo)  # 새 할 일을 파일에 저장
-    return redirect(url_for("index"))
+# 리스트 수정
+@app.route("/updated", methods=["POST"])
+def update():
+    data = request.get_json()
+    if data:
+        return save_todo(data)
 
 if __name__ == "__main__":
     app.template_folder = 'templates'
