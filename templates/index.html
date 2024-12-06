@@ -17,10 +17,10 @@
         </form>
         <ul class="todo-list" id="todoList">
             {% for todo in todos %}
-                <li id="{{ todo.id }}"
-                    class="{% if todo.status == 'C' %}completed{% endif %}"
+                <li id="{{ todo.ID }}"
+                    class="{% if todo.STATUS == 'C' %}completed{% endif %}"
                     onclick="toggleCompletion(this)">
-                    {{ todo.text }}
+                    {{ todo.TEXT }}
                 </li>
             {% endfor %}
         </ul>
