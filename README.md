@@ -7,6 +7,14 @@
 ## 개발환경
 - python : 3.13
 - anaconda : 3
+- mysql : 
+<br/><br/><br/>
+
+
+## 패키지 설치
+<blockquote data-ke-style="style2">
+<p data-ke-size="size16">pip install -r requirements.txt</p>
+</blockquote>
 <br/><br/><br/>
 
 
