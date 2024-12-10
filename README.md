@@ -8,6 +8,7 @@
 - python : 3.13
 - anaconda : 3
 - mysql : 8.0.33
+- Flask : 3.1.0
 <br/><br/><br/>
 
 
