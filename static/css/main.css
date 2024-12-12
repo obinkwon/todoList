@@ -54,6 +54,76 @@ button:hover {
     border-radius: 4px;
     border: 1px solid #ddd;
 }
+.todo-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.todo-item li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+.todo-item .todo-text {
+    flex-grow: 1;
+}
+.todo-item .button-group {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+.todo-item button {
+    padding: 5px 10px;
+    font-size: 12px;
+}
+.todo-item.completed {
+    text-decoration: line-through;
+    color: #888;
+}
+.toggle-switch {
+    position: relative;
+    width: 34px;
+    height: 20px;
+    margin-bottom: 0px;
+}
+.toggle-switch input {
+    display: none;
+    width: 0;
+    height: 0;
+}
+.toggle-switch .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 20px;
+}
+.toggle-switch .slider:before {
+    position: absolute;
+    content: "";
+    height: 12px;
+    width: 12px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+.toggle-switch input:checked + .slider {
+    background-color: #2196F3;
+}
+.toggle-switch input:checked + .slider:before {
+    transform: translateX(14px);
+}
+.edit-mode input {
+    display: none;
+}
 /* 완료된 항목 스타일 */
 .completed {
     text-decoration: line-through;

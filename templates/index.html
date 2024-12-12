@@ -17,10 +17,18 @@
         </form>
         <ul class="todo-list" id="todoList">
             {% for todo in todos %}
-                <li id="{{ todo.ID }}"
-                    class="{% if todo.STATUS == 'C' %}completed{% endif %}"
-                    onclick="toggleCompletion(this)">
-                    {{ todo.TEXT }}
+                <li id="todo-{{ todo.ID }}" class="todo-item">
+                    <span class="todo-text">{{ todo.TEXT }}</span>
+                    <input type="text" class="edit-input" value="{{ todo.TEXT }}" style="display:none;">
+                    <div class="button-group">
+                        <label class="toggle-switch">
+                            <input type="checkbox" onclick="toggleCompletion(this)" {% if todo.STATUS == 'C' %}checked{% endif %}>
+                            <span class="slider"></span>
+                        </label>
+                        <button type="button" class="edit-button" onclick="btnEditMode(this)">수정</button>
+                        <button type="button" class="save-button" onclick="onSaveTodoList(this)" style="display:none;">저장</button>
+                        <button type="button" class="remove-button" onclick="onRemoveTodoList({{ todo.ID }})" style="display:none;">제거</button>
+                    </div>
                 </li>
             {% endfor %}
         </ul>

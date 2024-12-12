@@ -8,9 +8,6 @@ from db.queries import SELECT_TODO_LIST, INSERT_TODO, UPDATE_TODO
 # 현재 날짜 가져오기
 current_date = str_date("%Y%m%d")
 
-# 파일 이름 생성
-TODO_FILE = f"todoList.json"
-
 # 할 일 목록 불러오기
 def load_todos():
     list = []
@@ -22,7 +19,19 @@ def load_todos():
 
 # 할 일 목록 저장하기
 def save_todo(todo):
-    print(todo)
+    # 새로 추가일때
+    with get_connection() as conn:
+        with conn.cursor() as cursor:
+            if todo.get('id') is None:
+                cursor.execute(INSERT_TODO,(todo.get("text"),current_date,current_date))
+            # 기존 데이터 수정일때
+            else:
+                cursor.execute(UPDATE_TODO,(current_date,todo.get("id")))
+        conn.commit()
+    return jsonify({'state': 'SUCCESS', 'message': 'success', 'todo': todo})
+
+# 할 일 목록 삭제하기
+def del_todo(todo):
     # 새로 추가일때
     with get_connection() as conn:
         with conn.cursor() as cursor:
