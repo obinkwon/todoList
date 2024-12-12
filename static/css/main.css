@@ -78,9 +78,8 @@ button:hover {
     padding: 5px 10px;
     font-size: 12px;
 }
-.todo-item.completed {
-    text-decoration: line-through;
-    color: #888;
+.todo-item input {
+    margin-bottom: 0px;
 }
 .toggle-switch {
     position: relative;
@@ -120,12 +119,4 @@ button:hover {
 }
 .toggle-switch input:checked + .slider:before {
     transform: translateX(14px);
-}
-.edit-mode input {
-    display: none;
-}
-/* 완료된 항목 스타일 */
-.completed {
-    text-decoration: line-through;
-    color: gray;
 }

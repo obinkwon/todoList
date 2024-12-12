@@ -22,7 +22,7 @@ function addList(messageText) {
 // 완료 처리 토글 함수
 function toggleCompletion(item) {
     let li = $(item).closest('.todo-item');
-    let json_data = {"id" : li.attr('id').replace('todo-','') ,"text" : li.find('.todo-text').text()}
+    let json_data = {"id" : li.attr('id').replace('todo-','')}
     // update API
     apiUpdate(json_data);
 }
