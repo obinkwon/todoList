@@ -10,10 +10,13 @@
 <body>
     <div class="container">
         <h1>오늘 할 일</h1>
-        <form id="todo-form">
-            <label for="todo">할 일을 입력하세요:</label>
-            <input type="text" id="todo" name="todo" placeholder="할 일을 입력하세요" required>
-            <button type="button" onclick="onAddTodoList()">추가</button>
+        <form class="todo-form">
+            <label for="todoInput">할 일을 입력하세요:</label>
+            <input type="text" id="todoInput" name="todoInput" placeholder="할 일을 입력하세요" required>
+            <div class="button-container">
+                <button type="button" class="small-button" onclick="onAddTodoList()">추가</button>
+                <button type="button" class="small-button" onclick="onCreateSentence()">문장 만들기</button>
+            </div>
         </form>
         <ul class="todo-list" id="todoList">
             {% for todo in todos %}

@@ -1,22 +1,22 @@
 // 리스트에 추가하는 함수
 function onAddTodoList(){
-    const todoInput = document.getElementById('todo');
+    const todoInput = document.getElementById('todoInput');
     const todoList = document.getElementById('todoList');
     const todoText = todoInput.value.trim();
     if (todoText !== '') {
         const listItem = document.createElement('li');
         listItem.textContent = todoText;
-        addList(todoText, 'saved');
-        todoList.appendChild(listItem);
-        todoInput.value = ''; // 입력 필드 초기화
+        // update API
+        apiFunc("updated", {"text" : todoText})
+        .then(result => {
+            console.log('result',result)
+            if(result == 'success'){
+                todoInput.value = ''; // 입력 필드 초기화
+                $('#todoList').load('/ #todoList'); // relaod
+            }
+        })
+        .catch(error => console.error(error));
     }
-}
-
-// 리스트에 추가하는 api
-function addList(messageText) {
-    let item = {"text" : messageText}
-    // update API
-    apiUpdate(item);
 }
 
 // 완료 처리 토글 함수
@@ -24,7 +24,7 @@ function toggleCompletion(item) {
     let li = $(item).closest('.todo-item');
     let json_data = {"id" : li.attr('id').replace('todo-','')}
     // update API
-    apiUpdate(json_data);
+    apiFunc("updated", json_data);
 }
 
 // 수정 버튼 함수
@@ -54,8 +54,6 @@ function onSaveTodoList(item) {
     let removeButton = li.find('.remove-button');
     let toggleSwitch = li.find('.toggle-switch');
 
-    let json_data = {"id" : li.attr('id').replace('todo-','') ,"text" : editInput.val()}
-
     // Update the UI with new text
     todoText.text(editInput.val());
     $(item).hide();
@@ -66,7 +64,7 @@ function onSaveTodoList(item) {
     toggleSwitch.show();
     
     // update API
-    apiUpdate(json_data);
+    apiFunc("updated", {"id" : li.attr('id').replace('todo-','') ,"text" : editInput.val()});
 }
 
 // 제거 버튼 함수
@@ -74,54 +72,34 @@ function onRemoveTodoList(item) {
     let li = $(item).closest('.todo-item');
     li.remove();
 
-    let json_data = {"id" : li.attr('id').replace('todo-','')}
-
     // delete API
-    apiDelete(json_data);
+    apiFunc("deleted", {"id" : li.attr('id').replace('todo-','')});
 }
 
-// update API
-function apiUpdate(json_data) {
-    $.ajax({
-        url: "http://127.0.0.1:5000/updated",
-        type: "POST",
-        dataType: "json",
-        contentType: "application/json",
-        data: JSON.stringify(json_data),
-        success: function (data) {
-            state = data['state'];
-
-            if (state === 'SUCCESS') {
-                return 'success';
-            } else {
-                return 'fail';
-            }
-        },
-        error: function (request, status, error) {
-            console.log('error : ',error);
-        }
-    });
+// 문장 만들기 버튼
+function onCreateSentence(){
+    // create sentence API
+    apiFunc("sentence", {});
 }
 
-// delete API
-function apiDelete(json_data) {
-    $.ajax({
-        url: "http://127.0.0.1:5000/deleted",
-        type: "POST",
-        dataType: "json",
-        contentType: "application/json",
-        data: JSON.stringify(json_data),
-        success: function (data) {
-            state = data['state'];
-
-            if (state === 'SUCCESS') {
-                return 'success';
-            } else {
-                return 'fail';
+function apiFunc(url, json_data) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: "http://127.0.0.1:5000/" + url,
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify(json_data),
+            success: function (data) {
+                if (data['state'] === 'SUCCESS') {
+                    resolve('success');
+                } else {
+                    resolve('fail');
+                }
+            },
+            error: function (request, status, error) {
+                console.log('error : ',error);
             }
-        },
-        error: function (request, status, error) {
-            console.log('error : ',error);
-        }
+        });
     });
 }

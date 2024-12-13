@@ -32,7 +32,7 @@ input[type="text"] {
 }
 button {
     padding: 10px 20px;
-    background-color: #007bff;
+    background-color: rgb(48, 106, 254);
     color: white;
     border: none;
     border-radius: 4px;
@@ -115,8 +115,39 @@ button:hover {
     border-radius: 50%;
 }
 .toggle-switch input:checked + .slider {
-    background-color: #2196F3;
+    background-color: rgb(48, 106, 254);
 }
 .toggle-switch input:checked + .slider:before {
     transform: translateX(14px);
+}
+.todo-form {
+    display: flex;
+    flex-direction: column;
+}
+.todo-form input {
+    flex: 1;
+    margin-bottom: 0.5rem;
+}
+.button-container {
+    display: flex;
+    justify-content: space-between;
+}
+.button-container button {
+    width: 48%;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    background: rgb(48, 106, 254);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.button-container button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.button-container button:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }

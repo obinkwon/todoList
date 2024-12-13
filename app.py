@@ -1,5 +1,5 @@
 from app.core import del_todo, load_todos, save_todo, tagging
-from flask import Flask, jsonify, redirect, render_template, request, url_for
+from flask import Flask, flash, redirect, render_template, request, url_for
 
 app = Flask(__name__)
 
@@ -15,10 +15,8 @@ def index():
 @app.route("/updated", methods=["POST"])
 def update():
     data = request.get_json()
-    tagging()
-    # 토크나이저 테스트를 위한 임시 주석처리
-    # if data:
-    #     return save_todo(data)
+    if data:
+        return save_todo(data)
 
 
 # 리스트 제거
@@ -27,6 +25,13 @@ def delete():
     data = request.get_json()
     if data:
         return del_todo(data)
+
+
+# 문장 만들기
+@app.route("/sentence", methods=["POST"])
+def sentence():
+    data = request.get_json()
+    return tagging()
 
 
 if __name__ == "__main__":
