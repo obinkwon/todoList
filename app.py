@@ -1,4 +1,4 @@
-from app.core import del_todo, load_todos, save_todo, tagging
+from app.core import del_todo, load_todos, save_todo, tokenize
 from flask import Flask, flash, redirect, render_template, request, url_for
 
 app = Flask(__name__)
@@ -30,8 +30,8 @@ def delete():
 # 문장 만들기
 @app.route("/sentence", methods=["POST"])
 def sentence():
-    data = request.get_json()
-    return tagging()
+    todos = load_todos()  # 저장된 할 일 불러오기
+    return tokenize([todo.get("TEXT") for todo in todos])
 
 
 if __name__ == "__main__":

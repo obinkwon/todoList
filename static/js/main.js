@@ -79,7 +79,11 @@ function onRemoveTodoList(item) {
 // 문장 만들기 버튼
 function onCreateSentence(){
     // create sentence API
-    apiFunc("sentence", {});
+    apiFunc("sentence", {})
+    .then(result => {
+        console.log('result',result)
+    })
+    .catch(error => console.error(error));
 }
 
 function apiFunc(url, json_data) {

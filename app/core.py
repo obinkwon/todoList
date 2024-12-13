@@ -60,8 +60,11 @@ def del_todo(todo):
 
 
 # 품사 태깅
-def tagging():
-    print("OKT 형태소 분석 :", okt.morphs("열심히 코딩한 당신, 연휴에는 여행을 가봐요"))
-    print("OKT 품사 태깅 :", okt.pos("열심히 코딩한 당신, 연휴에는 여행을 가봐요"))
-    print("OKT 명사 추출 :", okt.nouns("열심히 코딩한 당신, 연휴에는 여행을 가봐요"))
-    return jsonify({"state": "SUCCESS", "message": "success"})
+def tokenize(list):
+    return jsonify(
+        {
+            "state": "SUCCESS",
+            "message": "success",
+            "nouns": [okt.nouns(text) for text in list],
+        }
+    )
