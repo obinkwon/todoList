@@ -34,10 +34,12 @@ function btnEditMode(item) {
     let editInput = li.find('.edit-input');
     let saveButton = li.find('.save-button');
     let removeButton = li.find('.remove-button');
+    let toggleSwitch = li.find('.toggle-switch');
 
     // 토글 수정 모드
     $(item).hide();
     todoText.hide();
+    toggleSwitch.hide();
     editInput.show();
     saveButton.show();
     removeButton.show();
@@ -50,6 +52,7 @@ function onSaveTodoList(item) {
     let todoText = li.find('.todo-text');
     let editButton = li.find('.edit-button');
     let removeButton = li.find('.remove-button');
+    let toggleSwitch = li.find('.toggle-switch');
 
     let json_data = {"id" : li.attr('id').replace('todo-','') ,"text" : editInput.val()}
 
@@ -60,32 +63,50 @@ function onSaveTodoList(item) {
     removeButton.hide();
     todoText.show();
     editButton.show();
+    toggleSwitch.show();
     
     // update API
     apiUpdate(json_data);
 }
 
-function onRemoveTodoList(id) {
-    // Logic to remove the to-do item
-    var item = document.getElementById(id);
-    item.remove();
+// 제거 버튼 함수
+function onRemoveTodoList(item) {
+    let li = $(item).closest('.todo-item');
+    li.remove();
 
-    // Optionally, send a request to the server to remove the item
-    // Example with AJAX:
-    $.ajax({
-        url: '/remove-todo', // Your server endpoint for removing the item
-        type: 'POST',
-        data: { id: id },
-        success: function(response) {
-            // Handle server response if needed
-        }
-    });
+    let json_data = {"id" : li.attr('id').replace('todo-','')}
+
+    // delete API
+    apiDelete(json_data);
 }
 
 // update API
 function apiUpdate(json_data) {
     $.ajax({
         url: "http://127.0.0.1:5000/updated",
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json",
+        data: JSON.stringify(json_data),
+        success: function (data) {
+            state = data['state'];
+
+            if (state === 'SUCCESS') {
+                return 'success';
+            } else {
+                return 'fail';
+            }
+        },
+        error: function (request, status, error) {
+            console.log('error : ',error);
+        }
+    });
+}
+
+// delete API
+function apiDelete(json_data) {
+    $.ajax({
+        url: "http://127.0.0.1:5000/deleted",
         type: "POST",
         dataType: "json",
         contentType: "application/json",

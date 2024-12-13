@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, url_for, request, jsonify
-from app.core import load_todos, save_todo
+from app.core import load_todos, save_todo, del_todo
 
 app = Flask(__name__)
 
@@ -15,6 +15,13 @@ def update():
     data = request.get_json()
     if data:
         return save_todo(data)
+    
+# 리스트 제거
+@app.route("/deleted", methods=["POST"])
+def delete():
+    data = request.get_json()
+    if data:
+        return del_todo(data)
 
 if __name__ == "__main__":
     app.template_folder = 'templates'

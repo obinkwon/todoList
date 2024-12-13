@@ -27,7 +27,7 @@
                         </label>
                         <button type="button" class="edit-button" onclick="btnEditMode(this)">수정</button>
                         <button type="button" class="save-button" onclick="onSaveTodoList(this)" style="display:none;">저장</button>
-                        <button type="button" class="remove-button" onclick="onRemoveTodoList({{ todo.ID }})" style="display:none;">제거</button>
+                        <button type="button" class="remove-button" onclick="onRemoveTodoList(this)" style="display:none;">제거</button>
                     </div>
                 </li>
             {% endfor %}

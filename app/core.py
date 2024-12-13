@@ -2,7 +2,7 @@ import pymysql
 from utils.date import str_date
 from flask import jsonify
 from db.connection import get_connection
-from db.queries import SELECT_TODO_LIST, INSERT_TODO, UPDATE_STATUS, UPDATE_TODO
+from db.queries import SELECT_TODO_LIST, INSERT_TODO, UPDATE_STATUS, UPDATE_TODO, DELETE_TODO
 
 
 # 현재 날짜 가져오기
@@ -37,10 +37,6 @@ def del_todo(todo):
     # 새로 추가일때
     with get_connection() as conn:
         with conn.cursor() as cursor:
-            if todo.get('id') is None:
-                cursor.execute(INSERT_TODO,(todo.get("text"),current_date))
-            # 기존 데이터 수정일때
-            else:
-                cursor.execute(UPDATE_TODO,(todo.get("id")))
+            cursor.execute(DELETE_TODO,todo.get("id"))
         conn.commit()
     return jsonify({'state': 'SUCCESS', 'message': 'success', 'todo': todo})
