@@ -1,4 +1,4 @@
-// 리스트에 추가하는 함수
+// 추가 버튼
 function onAddTodoList(){
     const todoInput = $('#todoInput');
     const todoText = todoInput.val().trim();
@@ -7,8 +7,8 @@ function onAddTodoList(){
         listItem.textContent = todoText;
         // update API
         apiFunc("updated", {"text" : todoText})
-        .then(result => {
-            if(result.state == 'SUCCESS'){
+        .then(response => {
+            if(response.state == 'SUCCESS'){
                 todoInput.val(''); // 입력 필드 초기화
                 $('#todoList').load('/ #todoList'); // relaod
             }
@@ -25,7 +25,7 @@ function toggleCompletion(item) {
     apiFunc("updated", json_data);
 }
 
-// 수정 버튼 함수
+// 수정 버튼
 function btnEditMode(item) {
     let li = $(item).closest('.todo-item');
     let todoText = li.find('.todo-text');
@@ -43,7 +43,7 @@ function btnEditMode(item) {
     removeButton.show();
 }
 
-// 저장 버튼 함수
+// 저장 버튼
 function onSaveTodoList(item) {
     let li = $(item).closest('.todo-item');
     let editInput = li.find('.edit-input');
@@ -65,7 +65,7 @@ function onSaveTodoList(item) {
     apiFunc("updated", {"id" : li.attr('id').replace('todo-','') ,"text" : editInput.val()});
 }
 
-// 제거 버튼 함수
+// 제거 버튼
 function onRemoveTodoList(item) {
     let li = $(item).closest('.todo-item');
     li.remove();
@@ -78,10 +78,25 @@ function onRemoveTodoList(item) {
 function onCreateSentence(){
     // create sentence API
     apiFunc("sentence", {})
-    .then(result => {
-        console.log('result',result)
+    .then(response => {
+        console.log('response',response)
     })
     .catch(error => console.error(error));
+}
+
+// 내보내기 버튼
+function onExportTodoList(){
+    const sel = $('.select');
+    if(sel.length > 0){
+        let date = sel.data('date');
+        console.log('date', date);
+
+        apiFunc("export", {"date" : date.replaceAll('-','')})
+        .then(response => {
+            alert(response.message);
+        })
+        .catch(error => console.error(error));
+    }
 }
 
 function apiFunc(url, json_data) {
@@ -132,11 +147,10 @@ $(function(){
             const selectedDate = info.dateStr.replaceAll('-','');
             // history API
             apiFunc("history", {"date" : selectedDate})
-            .then(result => {
-                console.log('result',result)
-                if(result.state == 'SUCCESS'){
+            .then(response => {
+                if(response.state == 'SUCCESS'){
                     $('#selectedDate').text(info.dateStr);
-                    let todoList = result?.list;
+                    let todoList = response?.list;
 
                     dateTodoListEl.empty();
                     if (todoList?.length > 0) {

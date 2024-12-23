@@ -41,7 +41,11 @@
         <div class="calendar-container">
             <div id="calendar"></div>
             <div class="todo-list">
-                <h3 id="selectedDate">{{ history_todos.get('date') }}</h3>
+                <div class="button-container">
+                    <span id="selectedDate">{{ history_todos.get('date') }}</span>
+                    <button class="small-button" type="button" onclick="onExportTodoList()">내보내기</button>
+                </div>                
+                
                 <ul class="todo-list" id="dateTodoList">
                     {% for todo in history_todos.get('list') %}
                         <li class="todo-item">

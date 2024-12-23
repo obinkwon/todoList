@@ -1,5 +1,6 @@
 from app.core import del_todo, load_history_todos, load_todos, save_todo, tokenize
 from flask import Flask, flash, redirect, render_template, request, url_for
+from utils.file import export_todo
 
 app = Flask(__name__)
 
@@ -17,6 +18,14 @@ def index():
 def history():
     data = request.get_json()
     return load_history_todos(False, data.get("date"))  # 완료된 할 일 불러오기
+
+
+# 완료된 리스트 내보내기
+@app.route("/export", methods=["POST"])
+def export():
+    data = request.get_json()
+    result = load_history_todos(True, data.get("date"))
+    return export_todo(result.get("list"), result.get("date"))
 
 
 # 리스트 수정
