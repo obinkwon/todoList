@@ -119,13 +119,16 @@ $(function(){
         height: 300,
         initialView: "dayGridMonth",
         locale: "ko",
-        dayMaxEvents: true, 
+        dayMaxEvents: true,
         dayCellContent: function (info) {
-            // 날짜의 "일" 부분만 표시
-            const day = info.date.getDate(); // 숫자만 추출
+            // 날짜의 "일" 부분 숫자로 표시
+            const day = info.date.getDate();
             return { html: day };
         },
         dateClick: function (info) {
+            $('.select').removeClass('select');
+            $(info.dayEl).addClass('select');
+
             const selectedDate = info.dateStr.replaceAll('-','');
             // history API
             apiFunc("history", {"date" : selectedDate})
@@ -138,13 +141,13 @@ $(function(){
                     dateTodoListEl.empty();
                     if (todoList?.length > 0) {
                         todoList.forEach(todo => {
-                            let html = `<li id="history-${todo.ID}" class="todo-item">`;
-                            html += `<span class="todo-text text-center">${todo.TEXT}</span>`;
+                            let html = `<li class="todo-item">`;
+                            html += `<span class="todo-text">${todo.TEXT}</span>`;
                             html += `</li>`;
                             dateTodoListEl.append(html);
                         });
                     } else {
-                        dateTodoListEl.append('<li class="todo-item">완료된 일이 없습니다.</li>');
+                        dateTodoListEl.append('<li class="todo-item"><span class="todo-text">완료된 일이 없습니다.</span></li>');
                     }
                 }
             })

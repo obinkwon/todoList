@@ -5,19 +5,22 @@
 /* 이전/다음 버튼 스타일 */
 .fc-prev-button,
 .fc-next-button {
-    font-size: 12px !important;
-    padding: 4px 8px !important;
     background: rgb(48, 106, 254) !important;
     border: none !important;
-    border-radius: 20px !important;
 }
 
 /* 타이틀 스타일 (현재 월/년 표시 부분) */
 .fc-toolbar-title {
     font-size: 16px !important;
-    font-weight: bold !important;
 }
 /* 날짜 스타일 (일 표시 부분) */
+.fc-daygrid-day {
+    cursor: pointer;
+}
+.fc-daygrid-day.select {
+    background: rgb(48, 106, 254) !important;
+    color: #ffffff;
+}
 .fc-daygrid-day-number {
-    font-size: 11px !important;
+    font-size: 11px;
 }

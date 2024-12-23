@@ -10,7 +10,7 @@ from db.queries import (
 )
 from flask import jsonify
 from konlpy.tag import Kkma, Okt
-from utils.date import str_date
+from utils.date import format_date, str_date
 
 # 현재 날짜 가져오기
 current_date = str_date("%Y%m%d")
@@ -51,7 +51,7 @@ def load_history_todos(render=True, date=yesterday_date):
             cursor.execute(SELECT_HISTORY_TODO_LIST, (date))
             list = cursor.fetchall()
         if render:
-            return {"list": list, "date": date.strftime("%Y-%m-%d")}
+            return {"list": list, "date": format_date("%Y-%m-%d", date)}
         else:
             return jsonify({"state": "SUCCESS", "message": "success", "list": list})
 

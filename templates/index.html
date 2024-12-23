@@ -48,6 +48,11 @@
                             <span class="todo-text">{{ todo.TEXT }}</span>
                         </li>
                     {% endfor %}
+                    {% if not history_todos.get('list') %}
+                        <li class="todo-item">
+                            <span class="todo-text">완료된 일이 없습니다.</span>
+                        </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>

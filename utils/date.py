@@ -24,4 +24,5 @@ def format_date(format, date=str_date("%Y%m%d")):
     :param format: 날짜 포맷
     :param date: 날짜_문자열 (default: 오늘)
     """
-    return datetime.strptime(date, format)
+    currdate = datetime.strptime(date, "%Y%m%d")
+    return currdate.strftime(format)
