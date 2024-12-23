@@ -137,8 +137,7 @@ $(function(){
         dayMaxEvents: true,
         dayCellContent: function (info) {
             // 날짜의 "일" 부분 숫자로 표시
-            const day = info.date.getDate();
-            return { html: day };
+            return { html: info.date.getDate() };
         },
         dateClick: function (info) {
             $('.select').removeClass('select');
@@ -166,6 +165,20 @@ $(function(){
                 }
             })
             .catch(error => console.error(error));
+        },
+        viewDidMount: function(info) {
+            // 어제 날짜 구하기
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+
+            // 어제 날짜를 'YYYY-MM-DD' 형식으로 변환
+            const year = yesterday.getFullYear();
+            const month = String(yesterday.getMonth() + 1).padStart(2, '0');
+            const day = String(yesterday.getDate()).padStart(2, '0');
+            const yesterdayDateString = `${year}-${month}-${day}`;
+            const specificDateElement = $(`.fc-day[data-date="${yesterdayDateString}"]`);
+            
+            specificDateElement?.addClass('select');
         },
     });
 
