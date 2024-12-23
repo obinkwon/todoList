@@ -1,17 +1,15 @@
 // 리스트에 추가하는 함수
 function onAddTodoList(){
-    const todoInput = document.getElementById('todoInput');
-    const todoList = document.getElementById('todoList');
-    const todoText = todoInput.value.trim();
+    const todoInput = $('#todoInput');
+    const todoText = todoInput.val().trim();
     if (todoText !== '') {
         const listItem = document.createElement('li');
         listItem.textContent = todoText;
         // update API
         apiFunc("updated", {"text" : todoText})
         .then(result => {
-            console.log('result',result)
-            if(result == 'success'){
-                todoInput.value = ''; // 입력 필드 초기화
+            if(result.state == 'SUCCESS'){
+                todoInput.val(''); // 입력 필드 초기화
                 $('#todoList').load('/ #todoList'); // relaod
             }
         })
@@ -95,8 +93,8 @@ function apiFunc(url, json_data) {
             contentType: "application/json",
             data: JSON.stringify(json_data),
             success: function (data) {
-                if (data['state'] === 'SUCCESS') {
-                    resolve('success');
+                if (data.state === 'SUCCESS') {
+                    resolve(data);
                 } else {
                     resolve('fail');
                 }
@@ -107,3 +105,52 @@ function apiFunc(url, json_data) {
         });
     });
 }
+
+$(function(){
+    const calendarEl = document.getElementById("calendar");
+    const dateTodoListEl = $('#dateTodoList');
+
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+        headerToolbar: {
+            left:'prev',
+            center:'title',
+            right:'next'
+        },
+        height: 300,
+        initialView: "dayGridMonth",
+        locale: "ko",
+        dayMaxEvents: true, 
+        dayCellContent: function (info) {
+            // 날짜의 "일" 부분만 표시
+            const day = info.date.getDate(); // 숫자만 추출
+            return { html: day };
+        },
+        dateClick: function (info) {
+            const selectedDate = info.dateStr.replaceAll('-','');
+            // history API
+            apiFunc("history", {"date" : selectedDate})
+            .then(result => {
+                console.log('result',result)
+                if(result.state == 'SUCCESS'){
+                    $('#selectedDate').text(info.dateStr);
+                    let todoList = result?.list;
+
+                    dateTodoListEl.empty();
+                    if (todoList?.length > 0) {
+                        todoList.forEach(todo => {
+                            let html = `<li id="history-${todo.ID}" class="todo-item">`;
+                            html += `<span class="todo-text text-center">${todo.TEXT}</span>`;
+                            html += `</li>`;
+                            dateTodoListEl.append(html);
+                        });
+                    } else {
+                        dateTodoListEl.append('<li class="todo-item">완료된 일이 없습니다.</li>');
+                    }
+                }
+            })
+            .catch(error => console.error(error));
+        },
+    });
+
+    calendar.render();
+});

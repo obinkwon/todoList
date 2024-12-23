@@ -3,6 +3,7 @@ from db.connection import get_connection
 from db.queries import (
     DELETE_TODO,
     INSERT_TODO,
+    SELECT_HISTORY_TODO_LIST,
     SELECT_TODO_LIST,
     UPDATE_STATUS,
     UPDATE_TODO,
@@ -13,6 +14,8 @@ from utils.date import str_date
 
 # 현재 날짜 가져오기
 current_date = str_date("%Y%m%d")
+yesterday_date = str_date("%Y%m%d", 1)
+
 okt = Okt()
 kkma = Kkma()
 
@@ -27,6 +30,21 @@ def load_todos():
             cursor.execute(SELECT_TODO_LIST, (current_date))
             list = cursor.fetchall()
         return list
+
+
+# 해당날짜 완료된 목록 불러오기
+def load_history_todos(render=True, date=yesterday_date):
+    list = []
+    with get_connection() as conn:
+        with conn.cursor(
+            pymysql.cursors.DictCursor
+        ) as cursor:  # 결과를 딕셔너리 형태로 가져온다
+            cursor.execute(SELECT_HISTORY_TODO_LIST, (date))
+            list = cursor.fetchall()
+        if render:
+            return list
+        else:
+            return jsonify({"state": "SUCCESS", "message": "success", "list": list})
 
 
 # 할 일 목록 저장하기

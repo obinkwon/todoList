@@ -1,4 +1,4 @@
-from app.core import del_todo, load_todos, save_todo, tokenize
+from app.core import del_todo, load_history_todos, load_todos, save_todo, tokenize
 from flask import Flask, flash, redirect, render_template, request, url_for
 
 app = Flask(__name__)
@@ -8,7 +8,15 @@ app = Flask(__name__)
 @app.route("/", methods=["GET"])
 def index():
     todos = load_todos()  # 저장된 할 일 불러오기
-    return render_template("index.html", todos=todos)
+    history_todos = load_history_todos()  # 완료된 할 일 불러오기
+    return render_template("index.html", todos=todos, history_todos=history_todos)
+
+
+# 완료된 리스트 읽기
+@app.route("/history", methods=["POST"])
+def history():
+    data = request.get_json()
+    return load_history_todos(False, data.get("date"))  # 완료된 할 일 불러오기
 
 
 # 리스트 수정
