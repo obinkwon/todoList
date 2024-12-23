@@ -41,9 +41,9 @@
         <div class="calendar-container">
             <div id="calendar"></div>
             <div class="todo-list">
-                <h3 id="selectedDate">선택된 날짜: 없음</h3>
+                <h3 id="selectedDate">{{ history_todos.get('date') }}</h3>
                 <ul class="todo-list" id="dateTodoList">
-                    {% for todo in history_todos %}
+                    {% for todo in history_todos.get('list') %}
                         <li class="todo-item">
                             <span class="todo-text">{{ todo.TEXT }}</span>
                         </li>

@@ -20,8 +20,12 @@ okt = Okt()
 kkma = Kkma()
 
 
-# 할 일 목록 불러오기
-def load_todos():
+def load_todos() -> list:
+    """
+    할 일 목록 불러오기
+
+    :return: list
+    """
     list = []
     with get_connection() as conn:
         with conn.cursor(
@@ -32,8 +36,13 @@ def load_todos():
         return list
 
 
-# 해당날짜 완료된 목록 불러오기
 def load_history_todos(render=True, date=yesterday_date):
+    """
+    해당날짜 완료된 목록 불러오기
+
+    :param render: 렌더링 여부 (default: true)
+    :param date: 선택 날짜 (default: 어제 날짜)
+    """
     list = []
     with get_connection() as conn:
         with conn.cursor(
@@ -42,16 +51,20 @@ def load_history_todos(render=True, date=yesterday_date):
             cursor.execute(SELECT_HISTORY_TODO_LIST, (date))
             list = cursor.fetchall()
         if render:
-            return list
+            return {"list": list, "date": date.strftime("%Y-%m-%d")}
         else:
             return jsonify({"state": "SUCCESS", "message": "success", "list": list})
 
 
-# 할 일 목록 저장하기
 def save_todo(todo):
-    # 새로 추가일때
+    """
+    할 일 목록 저장하기
+
+    :param todo: 저장할 할일
+    """
     with get_connection() as conn:
         with conn.cursor() as cursor:
+            # 새로 추가일때
             if todo.get("id") is None:
                 cursor.execute(
                     INSERT_TODO, (todo.get("text"), current_date, current_date)
@@ -67,9 +80,12 @@ def save_todo(todo):
     return jsonify({"state": "SUCCESS", "message": "success", "todo": todo})
 
 
-# 할 일 목록 삭제하기
 def del_todo(todo):
-    # 새로 추가일때
+    """
+    할 일 목록 삭제하기
+
+    :param todo: 삭제할 할일
+    """
     with get_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(DELETE_TODO, todo.get("id"))
