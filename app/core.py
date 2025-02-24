@@ -10,6 +10,7 @@ from db.queries import (
 )
 from flask import jsonify
 from konlpy.tag import Kkma, Okt
+from transformers import GPT2LMHeadModel, PreTrainedTokenizerFast
 from utils.date import format_date, str_date
 
 # 현재 날짜 가져오기
@@ -18,6 +19,16 @@ yesterday_date = str_date("%Y%m%d", 1)
 
 okt = Okt()
 kkma = Kkma()
+
+model = GPT2LMHeadModel.from_pretrained("skt/kogpt2-base-v2")
+tokenizer = PreTrainedTokenizerFast.from_pretrained(
+    "skt/kogpt2-base-v2",
+    bos_token="</s>",
+    eos_token="</s>",
+    unk_token="<unk>",
+    pad_token="<pad>",
+    mask_token="<mask>",
+)
 
 
 def load_todos() -> list:
@@ -94,11 +105,24 @@ def del_todo(todo):
 
 
 # 품사 태깅
-def tokenize(list):
+def sentence_todo(list):
+    text = ",".join(list)
+    input_ids = tokenizer.encode(text, return_tensors="pt")
+    gen_ids = model.generate(
+        input_ids,
+        max_length=len(text) + 10,
+        repetition_penalty=2.0,
+        pad_token_id=tokenizer.pad_token_id,
+        eos_token_id=tokenizer.eos_token_id,
+        bos_token_id=tokenizer.bos_token_id,
+        use_cache=True,
+    )
+    generated = tokenizer.decode(gen_ids[0])
+
     return jsonify(
         {
             "state": "SUCCESS",
             "message": "success",
-            "nouns": [okt.nouns(text) for text in list],
+            "result": generated,
         }
     )

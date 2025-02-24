@@ -76,10 +76,9 @@ function onRemoveTodoList(item) {
 
 // 문장 만들기 버튼
 function onCreateSentence(){
-    // create sentence API
     apiFunc("sentence", {})
     .then(response => {
-        console.log('response',response)
+        openModal(response.result);
     })
     .catch(error => console.error(error));
 }
@@ -184,3 +183,14 @@ $(function(){
 
     calendar.render();
 });
+
+// 모달 열기
+function openModal(text) {
+    $('#modalOverlay').addClass('active');
+    $('#modalOverlay').find('.modal-content').text(text);
+}
+
+// 모달 닫기
+function closeModal() {
+    $('#modalOverlay').removeClass('active');
+}

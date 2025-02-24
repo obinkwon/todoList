@@ -1,4 +1,4 @@
-from app.core import del_todo, load_history_todos, load_todos, save_todo, tokenize
+from app.core import del_todo, load_history_todos, load_todos, save_todo, sentence_todo
 from flask import Flask, flash, redirect, render_template, request, url_for
 from utils.file import export_todo
 
@@ -48,7 +48,7 @@ def delete():
 @app.route("/sentence", methods=["POST"])
 def sentence():
     todos = load_todos()  # 저장된 할 일 불러오기
-    return tokenize([todo.get("TEXT") for todo in todos])
+    return sentence_todo([todo.get("TEXT") for todo in todos])
 
 
 if __name__ == "__main__":
