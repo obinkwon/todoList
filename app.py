@@ -1,6 +1,35 @@
+import torch
 from app.core import del_todo, load_history_todos, load_todos, save_todo, sentence_todo
+from app.dataLoader import DataLoader
+from app.dataset import Dataset
+from app.processor import Processor
 from flask import Flask, flash, redirect, render_template, request, url_for
+from transformers import GPT2LMHeadModel, PreTrainedTokenizerFast
+from transformers.optimization import AdamW
 from utils.file import export_todo
+from utils.sentence import tokenize_sentence
+
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+model = GPT2LMHeadModel.from_pretrained("skt/kogpt2-base-v2")
+tokenizer = PreTrainedTokenizerFast.from_pretrained(
+    "skt/kogpt2-base-v2",
+    bos_token="</s>",
+    eos_token="</s>",
+    unk_token="<unk>",
+    pad_token="<pad>",
+    mask_token="<mask>",
+)
+
+dataset = Dataset().dataset
+
+# 옵티마이저 설정
+optimizer = AdamW(model.parameters(), lr=5e-5)
+
+# 데이터 로더 생성
+train_dataloader = DataLoader(dataset.map(tokenize_sentence, batched=True)).dataloader
+
+# 학습 실행
+Processor(False, train_dataloader, optimizer, model, device, tokenizer)
 
 app = Flask(__name__)
 
@@ -25,7 +54,7 @@ def history():
 def export():
     data = request.get_json()
     result = load_history_todos(True, data.get("date"))
-    return export_todo(result.get("list"), result.get("date"))
+    return export_todo(result)
 
 
 # 리스트 수정
