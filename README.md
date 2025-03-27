@@ -9,7 +9,7 @@
 - anaconda : 3
 - mysql : 8.0.33
 - Flask : 3.1.0
-- LLM : skt/kogpt2-base-v2
+- LLM : skt/kogpt2-base-v2 (125M)
 <br/><br/><br/>
 
 
